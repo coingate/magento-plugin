@@ -1,0 +1,12 @@
+<config>
+    <modules>
+        <Mage_Coingate>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_Payment/>
+            </depends>
+            <version>0.2.0</version>
+        </Mage_Coingate>
+    </modules>
+</config>
