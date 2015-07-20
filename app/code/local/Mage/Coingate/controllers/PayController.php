@@ -41,7 +41,7 @@ class Mage_Coingate_PayController extends Mage_Core_Controller_Front_Action
         $session = Mage::getSingleton('checkout/session');
         $session->setQuoteId($session->getPayQuoteId(TRUE));
         Mage::getSingleton('checkout/session')->getQuote()->setIsActive(FALSE)->save();
-        $this->_redirect('checkout/onepage/success', ['_secure' => TRUE]);
+        $this->_redirect('checkout/onepage/success', array('_secure' => TRUE));
     }
 
     public function failAction()

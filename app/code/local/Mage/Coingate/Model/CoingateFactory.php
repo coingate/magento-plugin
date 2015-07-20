@@ -26,7 +26,7 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
 
         $title = Mage::app()->getWebsite()->getName();
 
-        $description = [];
+        $description = array();
 
         foreach ($order->getAllItems() as $item) {
             $description[] = number_format($item->getQtyOrdered(), 0) . ' × ' . $item->getName();
@@ -35,9 +35,9 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
         $cgConfig = Mage::getStoreConfig('payment/coingate');
 
         $mode = $cgConfig['test'] == '1' ? 'sandbox' : 'live';
-        $coingate = new CoingateMerchant(['app_id' => $cgConfig['app_id'], 'api_key' => $cgConfig['api_key'], 'api_secret' => $cgConfig['api_secret'], 'mode' => $mode]);
+        $coingate = new CoingateMerchant(array('app_id' => $cgConfig['app_id'], 'api_key' => $cgConfig['api_key'], 'api_secret' => $cgConfig['api_secret'], 'mode' => $mode));
 
-        $coingate->create_order([
+        $coingate->create_order(array(
             'order_id'         => $order->increment_id,
             'price'            => number_format($order->grand_total, 2, '.', ''),
             'currency'         => $order->order_currency_code,
@@ -47,7 +47,7 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
             'callback_url'     => Mage::getUrl('coingate/pay/callback') . '?token=' . $token,
             'title'            => $title . ' Order #' . $order->increment_id,
             'description'      => join($description, ', ')
-        ]);
+        ));
 
         if ($coingate->success) {
             $coingate_response = json_decode($coingate->response, TRUE);
@@ -75,6 +75,7 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
             $cgConfig = Mage::getStoreConfig('payment/coingate');
 
             $mode = $cgConfig['test'] == '1' ? 'sandbox' : 'live';
+            /** @noinspection PhpLanguageLevelInspection */
             $coingate = new CoingateMerchant(['app_id' => $cgConfig['app_id'], 'api_key' => $cgConfig['api_key'], 'api_secret' => $cgConfig['api_secret'], 'mode' => $mode]);
 
             $coingate->get_order($_REQUEST['id']);
@@ -91,7 +92,7 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
                 $order->sendNewOrderEmail()
                     ->setState(Mage_Sales_Model_Order::STATE_PROCESSING, TRUE)
                     ->save();
-            } elseif (in_array($coingate_response['status'], ['invalid', 'expired', 'canceled'])) {
+            } elseif (in_array($coingate_response['status'], array('invalid', 'expired', 'canceled'))) {
                 $order->sendNewOrderEmail()
                     ->setState(Mage_Sales_Model_Order::STATE_CANCELED, TRUE)
                     ->save();
