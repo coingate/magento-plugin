@@ -2,6 +2,8 @@
 
 require_once(Mage::getBaseDir() . '/app/code/local/Mage/Coingate/lib/coingate_merchant.class.php');
 
+define('COINGATE_MAGENTO_VERSION', '1.0.1');
+
 class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abstract
 {
     protected $_isGateway = TRUE;
@@ -32,10 +34,7 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
             $description[] = number_format($item->getQtyOrdered(), 0) . ' × ' . $item->getName();
         }
 
-        $cgConfig = Mage::getStoreConfig('payment/coingate');
-
-        $mode = $cgConfig['test'] == '1' ? 'sandbox' : 'live';
-        $coingate = new CoingateMerchant(array('app_id' => $cgConfig['app_id'], 'api_key' => $cgConfig['api_key'], 'api_secret' => $cgConfig['api_secret'], 'mode' => $mode));
+        $coingate = $this->initCoingateMerchantClass(Mage::getStoreConfig('payment/coingate'));
 
         $coingate->create_order(array(
             'order_id'         => $order->increment_id,
@@ -72,11 +71,7 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
             if ($token == '' || $_GET['token'] != $token)
                 throw new Exception('Token: 1:' . $_GET['token'] . ' : 2:' . $token . ' do not match');
 
-            $cgConfig = Mage::getStoreConfig('payment/coingate');
-
-            $mode = $cgConfig['test'] == '1' ? 'sandbox' : 'live';
-            /** @noinspection PhpLanguageLevelInspection */
-            $coingate = new CoingateMerchant(['app_id' => $cgConfig['app_id'], 'api_key' => $cgConfig['api_key'], 'api_secret' => $cgConfig['api_secret'], 'mode' => $mode]);
+            $coingate = $this->initCoingateMerchantClass(Mage::getStoreConfig('payment/coingate'));
 
             $coingate->get_order($_REQUEST['id']);
 
@@ -100,5 +95,17 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
         } catch (Exception $e) {
             echo get_class($e) . ': ' . $e->getMessage();
         }
+    }
+
+    private function initCoingateMerchantClass($cgConfig) {
+        return new CoingateMerchant(
+            array(
+                'app_id'        => $cgConfig['app_id'],
+                'api_key'       => $cgConfig['api_key'],
+                'api_secret'    => $cgConfig['api_secret'],
+                'mode'          => $cgConfig['test'] == '1' ? 'sandbox' : 'live',
+                'user_agent'    => 'CoinGate - Magento Extension v' . COINGATE_MAGENTO_VERSION
+            )
+        );
     }
 }
