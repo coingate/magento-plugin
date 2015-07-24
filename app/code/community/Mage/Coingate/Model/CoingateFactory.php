@@ -34,7 +34,9 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
             $description[] = number_format($item->getQtyOrdered(), 0) . ' × ' . $item->getName();
         }
 
-        $coingate = $this->initCoingateMerchantClass(Mage::getStoreConfig('payment/coingate'));
+        $cgConfig = Mage::getStoreConfig('payment/coingate');
+
+        $coingate = $this->initCoingateMerchantClass($cgConfig);
 
         $coingate->create_order(array(
             'order_id'         => $order->increment_id,
@@ -71,7 +73,9 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
             if ($token == '' || $_GET['token'] != $token)
                 throw new Exception('Token: 1:' . $_GET['token'] . ' : 2:' . $token . ' do not match');
 
-            $coingate = $this->initCoingateMerchantClass(Mage::getStoreConfig('payment/coingate'));
+            $cgConfig = Mage::getStoreConfig('payment/coingate');
+
+            $coingate = $this->initCoingateMerchantClass($cgConfig);
 
             $coingate->get_order($_REQUEST['id']);
 
