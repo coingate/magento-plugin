@@ -1,6 +1,6 @@
 <?php
 
-require_once(Mage::getBaseDir() . '/app/code/local/Mage/Coingate/lib/coingate_merchant.class.php');
+require_once(Mage::getBaseDir() . '/app/code/community/Mage/Coingate/lib/coingate_merchant.class.php');
 
 define('COINGATE_MAGENTO_VERSION', '1.0.1');
 
