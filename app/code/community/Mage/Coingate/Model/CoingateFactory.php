@@ -80,7 +80,7 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
             $coingate->get_order($_REQUEST['id']);
 
             if (!$coingate->success)
-                throw new Exception('CoinGate Order #' . $order->increment_id . ' does not exists');
+                throw new Exception('CoinGate Order #' . $_REQUEST['id'] . ' does not exist');
 
             $coingate_response = json_decode($coingate->response, TRUE);
 
