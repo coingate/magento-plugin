@@ -55,14 +55,7 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
 
             return $coingate_response['payment_url'];
         } else {
-            Mage::Log('Create order error'
-                . ' - App ID: ' . $cgConfig['app_id']
-                . '; HTTP Status: ' . $coingate->status_code
-                . '; Response: ' . $coingate->response
-                . '; cURL Error: ' . json_encode($coingate->curl_error)
-                . '; PHP Version: ' . phpversion()
-                . '; cURL Version: ' . json_encode(curl_version())
-                . "\n", null, 'coingate.log', true);
+            $this->logMe('Create order', $cgConfig, $coingate);
         }
 
         return FALSE;
@@ -91,14 +84,7 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
             if (!$coingate->success)
                 throw new Exception('CoinGate Order #' . $_REQUEST['id'] . ' does not exist');
             else {
-                Mage::Log('Validate order error'
-                    . ' - App ID: ' . $cgConfig['app_id']
-                    . '; HTTP Status: ' . $coingate->status_code
-                    . '; Response: ' . $coingate->response
-                    . '; cURL Error: ' . json_encode($coingate->curl_error)
-                    . '; PHP Version: ' . phpversion()
-                    . '; cURL Version: ' . json_encode(curl_version())
-                    . "\n", null, 'coingate.log', true);
+                $this->logMe('Validate order', $cgConfig, $coingate);
             }
 
             $coingate_response = json_decode($coingate->response, TRUE);
@@ -130,5 +116,21 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
                 'user_agent'    => 'CoinGate - Magento Extension v' . COINGATE_MAGENTO_VERSION
             )
         );
+    }
+
+    private function logMe($name, $cgConfig, $coingate, $customData = '')
+    {
+        Mage::Log($name
+            . ' - App ID: ' . $cgConfig['app_id']
+            . '; Mode: ' . ($cgConfig['test'] == '1' ? 'sandbox' : 'live')
+            . '; HTTP Status: ' . $coingate->status_code
+            . '; Response: ' . $coingate->response
+            . '; cURL Error: ' . json_encode($coingate->curl_error)
+            . '; PHP Version: ' . phpversion()
+            . '; cURL Version: ' . json_encode(curl_version())
+            . '; Magento Version: ' . Mage::getVersion()
+            . '; Plugin Version: ' . COINGATE_MAGENTO_VERSION
+            . $customData
+            . "\n", null, 'coingate.log', true);
     }
 }
