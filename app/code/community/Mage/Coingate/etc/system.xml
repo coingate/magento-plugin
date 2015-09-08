@@ -63,6 +63,7 @@
                             <label>Currency you want to receive</label>
                             <frontend_type>select</frontend_type>
                             <source_model>coingate/receiveCurrencies</source_model>
+                            <tooltip></tooltip>
                             <sort_order>7</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
