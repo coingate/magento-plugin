@@ -54,6 +54,15 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
             $coingate_response = json_decode($coingate->response, TRUE);
 
             return $coingate_response['payment_url'];
+        } else {
+            Mage::Log('Create order error'
+                . ' - App ID: ' . $cgConfig['app_id']
+                . '; HTTP Status: ' . $coingate->status_code
+                . '; Response: ' . $coingate->response
+                . '; cURL Error: ' . json_encode($coingate->curl_error)
+                . '; PHP Version: ' . phpversion()
+                . '; cURL Version: ' . json_encode(curl_version())
+                . "\n", null, 'coingate.log', true);
         }
 
         return FALSE;
@@ -81,6 +90,16 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
 
             if (!$coingate->success)
                 throw new Exception('CoinGate Order #' . $_REQUEST['id'] . ' does not exist');
+            else {
+                Mage::Log('Validate order error'
+                    . ' - App ID: ' . $cgConfig['app_id']
+                    . '; HTTP Status: ' . $coingate->status_code
+                    . '; Response: ' . $coingate->response
+                    . '; cURL Error: ' . json_encode($coingate->curl_error)
+                    . '; PHP Version: ' . phpversion()
+                    . '; cURL Version: ' . json_encode(curl_version())
+                    . "\n", null, 'coingate.log', true);
+            }
 
             $coingate_response = json_decode($coingate->response, TRUE);
 
