@@ -29,3 +29,5 @@ You can sign up for CoinGate account at <https://coingate.com> for production an
 10. Enter your API credentials: *App ID*, *API Key*, *API Secret* (to create your API credentials: login to your CoinGate account, go to *API » Apps*, click **+New App**, then click **Submit**).
 
 11. Click **Save Config**.
+
+If the plugin does not work, go to *System » Cache Management* and click on the **Flush Cache Storage** button.
