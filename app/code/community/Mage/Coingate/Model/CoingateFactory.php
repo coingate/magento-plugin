@@ -94,17 +94,22 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
                 throw new Exception('Something wrong with callback');
             }
 
-            if ($coingate_response['status'] == 'paid') {
-                $mage_status = Mage_Sales_Model_Order::STATE_PROCESSING;
-            }
-            else if ($coingate_response['status'] == 'confirming') {
-                $mage_status = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
-            }
-            else if (in_array($coingate_response['status'], array('invalid', 'expired', 'canceled'))) {
-                $mage_status = Mage_Sales_Model_Order::STATE_CANCELED;
-            }
-            else {
-                $mage_status = NULL;
+            switch ($coingate_response['status']) {
+                case 'paid':
+                    $mage_status = $cgConfig['invoice_paid'];
+                    break;
+                case 'canceled':
+                    $mage_status = $cgConfig['invoice_canceled'];
+                    break;
+                case 'expired':
+                    $mage_status = $cgConfig['invoice_expired'];
+                    break;
+                case 'invalid':
+                    $mage_status = $cgConfig['invoice_invalid'];
+                    break;
+                case 'refunded':
+                    $mage_status = $cgConfig['invoice_refunded'];
+                    break;
             }
 
             if (!is_null($mage_status)) {
