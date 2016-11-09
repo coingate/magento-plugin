@@ -97,9 +97,6 @@
                       </invoice>
                       <invoice_paid translate="label">
                           <label>Paid</label>
-                          <comment>
-                              <![CDATA[The payment has been received and confirmed.]]>
-                          </comment>
                           <frontend_type>select</frontend_type>
                           <source_model>adminhtml/system_config_source_order_status</source_model>
                           <sort_order>120</sort_order>
@@ -109,9 +106,6 @@
                       </invoice_paid>
                       <invoice_canceled translate="label">
                           <label>Canceled</label>
-                          <comment>
-                              <![CDATA[The order was canceled.]]>
-                          </comment>
                           <frontend_type>select</frontend_type>
                           <source_model>adminhtml/system_config_source_order_status</source_model>
                           <sort_order>130</sort_order>
@@ -121,9 +115,6 @@
                       </invoice_canceled>
                       <invoice_expired translate="label">
                           <label>Expired</label>
-                          <comment>
-                              <![CDATA[The order has expired.]]>
-                          </comment>
                           <frontend_type>select</frontend_type>
                           <source_model>adminhtml/system_config_source_order_status</source_model>
                           <sort_order>140</sort_order>
@@ -133,9 +124,6 @@
                       </invoice_expired>
                       <invoice_invalid translate="label">
                           <label>Invalid</label>
-                          <comment>
-                              <![CDATA[The payment is invalid.]]>
-                          </comment>
                           <frontend_type>select</frontend_type>
                           <source_model>adminhtml/system_config_source_order_status</source_model>
                           <sort_order>150</sort_order>
@@ -145,9 +133,6 @@
                       </invoice_invalid>
                       <invoice_refunded translate="label">
                           <label>Refunded</label>
-                          <comment>
-                              <![CDATA[The payment was refunded.]]>
-                          </comment>
                           <frontend_type>select</frontend_type>
                           <source_model>adminhtml/system_config_source_order_status</source_model>
                           <sort_order>150</sort_order>
