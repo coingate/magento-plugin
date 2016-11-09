@@ -106,6 +106,8 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
                 case 'refunded':
                     $mage_status = $cgConfig['invoice_refunded'];
                     break;
+                default:
+                  $mage_status = NULL;
             }
 
             if (!is_null($mage_status)) {
