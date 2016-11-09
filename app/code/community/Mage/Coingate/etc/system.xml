@@ -10,7 +10,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>0</show_in_store>
                     <comment>
-                        Having trouble? <a href="https://developer.coingate.com/docs/issues" target="_blank">View common issues</a> or contact <a href="mailto:support@coingate.com">support@coingate.com</a>.
+                        Having trouble? View common issues: https://developer.coingate.com/docs/issues or contact support@coingate.com
                     </comment>
                     <fields>
                         <active translate="label">
