@@ -110,7 +110,7 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
                   $mage_status = NULL;
             }
 
-            if (!is_null($mage_status)) {
+            if (!is_null($mage_status) && $coingate_response['status'] == 'paid') {
                 $order->sendNewOrderEmail()
                     ->setState($mage_status, TRUE)
                     ->save();
