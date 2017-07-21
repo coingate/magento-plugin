@@ -1,6 +1,9 @@
 # Magento CoinGate Plugin
 
-CoinGate bitcoin payment gateway Magento plugin.
+Accept Bitcoin & Altcoins on your Magento store.
+
+Read the plugin installation instructions below to get started with CoinGate Bitcoin & Altcoin payment gateway on your shop.
+Full setup guide with screenshots is also available on our blog: <https://blog.coingate.com/2017/05/install-magento-bitcoin-altcoins-plugin/>
 
 ## Install
 
