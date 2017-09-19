@@ -36,3 +36,16 @@ Please note, that for "Test" mode you **must** generate separate API credentials
 11. Click **Save Config**.
 
 If the plugin does not work, go to *System » Cache Management* and click on the **Flush Cache Storage** button.
+
+#### Please note
+
+You must setup Magento cron jobs to deliver **order confirmation** (and other transactional) **e-mails**:
+
+> Several Magento features require at least one cron job, which schedules activities to occur in the future. A partial list of these activities follows:
+>
+> ...
+>
+> Magento EE 1.14.1 and later, Magento CE 1.9.1 and later All Magento e-mails (including order confirmation and transactional)
+
+Cron jobs setup instruction:
+http://devdocs.magento.com/guides/m1x/install/installing_install.html#install-cron
