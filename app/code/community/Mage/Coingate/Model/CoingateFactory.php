@@ -68,7 +68,7 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
 
       $order = Mage::getModel('sales/order')->loadByIncrementId($incrementId);
 
-      if (empty($order) || empty($order->getIncrementId())) {
+      if (empty($order) || !$order->getIncrementId()) {
         throw new Exception('Magento Order #' . $incrementId . ' does not exist.');
       }
 
