@@ -112,6 +112,14 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
 
       if (!is_null($mageStatus)) {
         $order->setState($mageStatus, TRUE)->save();
+
+        if ($cgOrder->status == 'paid') {
+          $order->setTotalPaid($cgOrder->price)->save();
+        }
+
+        if ($cgOrder->status == 'refunded') {
+          $order->setTotalRefunded($cgOrder->price)->save();
+        }
       }
     } catch (Exception $e) {
       Mage::logException($e);
