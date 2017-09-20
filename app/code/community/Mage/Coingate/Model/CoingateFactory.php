@@ -1,132 +1,131 @@
 <?php
 
-require_once(Mage::getBaseDir() . '/app/code/community/Mage/Coingate/lib/coingate_merchant.class.php');
+require_once(Mage::getBaseDir() . '/app/code/community/Mage/Coingate/lib/coingate-php/init.php');
 
-define('COINGATE_MAGENTO_VERSION', '1.0.7');
+define('COINGATE_MAGENTO_VERSION', '1.0.8-dev');
 
 class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abstract
 {
-    protected $_isGateway = TRUE;
-    protected $_canAuthorize = TRUE;
+  protected $_isGateway = TRUE;
+  protected $_canAuthorize = TRUE;
 
-    protected $_code = 'coingate';
+  protected $_code = 'coingate';
 
-    public function getOrderPlaceRedirectUrl()
-    {
-        return Mage::getUrl('coingate/pay/redirect');
+  public function getOrderPlaceRedirectUrl()
+  {
+    return Mage::getUrl('coingate/pay/redirect');
+  }
+
+  public function getRequest()
+  {
+    $order = Mage::getModel('sales/order')->load(Mage::getSingleton('checkout/session')->getLastOrderId());
+
+    $token = substr(md5(rand()), 0, 32);
+
+    $payment = $order->getPayment();
+    $payment->setAdditionalInformation('coingate_order_token', $token);
+    $payment->save();
+
+    $title = Mage::app()->getWebsite()->getName();
+
+    $description = array();
+
+    foreach ($order->getAllItems() as $item) {
+      $description[] = number_format($item->getQtyOrdered(), 0) . ' × ' . $item->getName();
     }
 
-    public function getRequest()
-    {
-        $order = Mage::getModel('sales/order')->load(Mage::getSingleton('checkout/session')->getLastOrderId());
+    $cgConfig = Mage::getStoreConfig('payment/coingate');
 
-        $token = substr(md5(rand()), 0, 32);
+    $this->initCoinGate($cgConfig);
 
-        $payment = $order->getPayment();
-        $payment->setAdditionalInformation('coingate_order_token', $token);
-        $payment->save();
+    $order = \CoinGate\Merchant\Order::create(array(
+      'order_id'          => $order->increment_id,
+      'price'             => number_format($order->grand_total, 2, '.', ''),
+      'currency'          => $order->order_currency_code,
+      'receive_currency'  => $cgConfig['receive_currency'],
+      'success_url'       => Mage::getUrl('coingate/pay/success'),
+      'cancel_url'        => Mage::getUrl('coingate/pay/cancel'),
+      'callback_url'      => Mage::getUrl('coingate/pay/callback') . '?token=' . $token,
+      'title'             => $title . ' Order #' . $order->increment_id,
+      'description'       => join($description, ', ')
+    ));
 
-        $title = Mage::app()->getWebsite()->getName();
-
-        $description = array();
-
-        foreach ($order->getAllItems() as $item) {
-            $description[] = number_format($item->getQtyOrdered(), 0) . ' × ' . $item->getName();
-        }
-
-        $cgConfig = Mage::getStoreConfig('payment/coingate');
-
-        $coingate = $this->initCoingateMerchantClass($cgConfig);
-
-        $coingate->create_order(array(
-            'order_id'         => $order->increment_id,
-            'price'            => number_format($order->grand_total, 2, '.', ''),
-            'currency'         => $order->order_currency_code,
-            'receive_currency' => $cgConfig['receive_currency'],
-            'success_url'      => Mage::getUrl('coingate/pay/success'),
-            'cancel_url'       => Mage::getUrl('coingate/pay/cancel'),
-            'callback_url'     => Mage::getUrl('coingate/pay/callback') . '?token=' . $token,
-            'title'            => $title . ' Order #' . $order->increment_id,
-            'description'      => join($description, ', ')
-        ));
-
-        if ($coingate->success) {
-            $coingate_response = json_decode($coingate->response, TRUE);
-
-            return $coingate_response['payment_url'];
-        }
-
-        return FALSE;
+    if (!empty($order)) {
+      return $order->payment_url;
     }
 
-    public function validateCallback()
-    {
-        try {
-            $order = Mage::getModel('sales/order')->loadByIncrementId($_REQUEST['order_id']);
+    return FALSE;
+  }
 
-            if (!$order || !$order->increment_id)
-                throw new Exception('Order #' . $_REQUEST['order_id'] . ' does not exists');
+  public function validateCallback()
+  {
+    try {
+      $incrementId = Mage::app()->getRequest()->getParam('order_id');
 
-            $payment = $order->getPayment();
-            $token = $payment->getAdditionalInformation('coingate_order_token');
+      if (empty($incrementId)) {
+        throw new Exception('Parameter order_id is empty.');
+      }
 
-            if ($token == '' || $_GET['token'] != $token) {
-                throw new Exception('Token: 1:' . $_GET['token'] . ' : 2:' . $token . ' do not match');
-            }
+      $order = Mage::getModel('sales/order')->loadByIncrementId($incrementId);
 
-            $cgConfig = Mage::getStoreConfig('payment/coingate');
+      if (empty($order) || empty($order->getIncrementId())) {
+        throw new Exception('Magento Order #' . $incrementId . ' does not exist.');
+      }
 
-            $coingate = $this->initCoingateMerchantClass($cgConfig);
+      $payment = $order->getPayment();
+      $token = $payment->getAdditionalInformation('coingate_order_token');
 
-            $coingate->get_order($_REQUEST['id']);
+      if (empty($token) || strcmp($token, Mage::app()->getRequest()->getParam('token')) !== 0) {
+        throw new Exception('CoinGate security token does not match.');
+      }
 
-            if (!$coingate->success) {
-                throw new Exception('CoinGate Order #' . $_REQUEST['id'] . ' does not exist');
-            }
+      $cgConfig = Mage::getStoreConfig('payment/coingate');
 
-            $coingate_response = json_decode($coingate->response, TRUE);
+      $this->initCoinGate($cgConfig);
 
-            if (!is_array($coingate_response)) {
-                throw new Exception('Something wrong with callback');
-            }
+      $cgOrderId = Mage::app()->getRequest()->getParam('id');
+      $cgOrder = \CoinGate\Merchant\Order::find($cgOrderId);
 
-            switch ($coingate_response['status']) {
-                case 'paid':
-                    $mage_status = $cgConfig['invoice_paid'];
-                    break;
-                case 'canceled':
-                    $mage_status = $cgConfig['invoice_canceled'];
-                    break;
-                case 'expired':
-                    $mage_status = $cgConfig['invoice_expired'];
-                    break;
-                case 'invalid':
-                    $mage_status = $cgConfig['invoice_invalid'];
-                    break;
-                case 'refunded':
-                    $mage_status = $cgConfig['invoice_refunded'];
-                    break;
-                default:
-                  $mage_status = NULL;
-            }
+      if (empty($cgOrder)) {
+        throw new Exception('CoinGate Order #' . $cgOrderId . ' does not exist.');
+      }
 
-            if (!is_null($mage_status)) {
-              $order->setState($mage_status, TRUE)->save();
-            }
-        } catch (Exception $e) {
-            echo get_class($e) . ': ' . $e->getMessage();
-        }
+      switch ($cgOrder->status) {
+        case 'paid':
+          $mageStatus = $cgConfig['invoice_paid'];
+          break;
+        case 'canceled':
+          $mageStatus = $cgConfig['invoice_canceled'];
+          break;
+        case 'expired':
+          $mageStatus = $cgConfig['invoice_expired'];
+          break;
+        case 'invalid':
+          $mageStatus = $cgConfig['invoice_invalid'];
+          break;
+        case 'refunded':
+          $mageStatus = $cgConfig['invoice_refunded'];
+          break;
+        default:
+          $mageStatus = NULL;
+      }
+
+      if (!is_null($mageStatus)) {
+        $order->setState($mageStatus, TRUE)->save();
+      }
+    } catch (Exception $e) {
+      Mage::logException($e);
     }
+  }
 
-    private function initCoingateMerchantClass($cgConfig) {
-        return new CoingateMerchant(
-            array(
-                'app_id'        => $cgConfig['app_id'],
-                'api_key'       => $cgConfig['api_key'],
-                'api_secret'    => $cgConfig['api_secret'],
-                'mode'          => $cgConfig['test'] == '1' ? 'sandbox' : 'live',
-                'user_agent'    => 'CoinGate - Magento Extension v' . COINGATE_MAGENTO_VERSION
-            )
-        );
-    }
+  private function initCoinGate($cgConfig)
+  {
+    \CoinGate\CoinGate::config((array(
+      'app_id'      => $cgConfig['app_id'],
+      'api_key'     => $cgConfig['api_key'],
+      'api_secret'  => $cgConfig['api_secret'],
+      'environment' => (int)($cgConfig['test']) == 1 ? 'sandbox' : 'live',
+      'user_agent'  => 'CoinGate - Magento Extension v' . COINGATE_MAGENTO_VERSION
+    )));
+  }
 }
