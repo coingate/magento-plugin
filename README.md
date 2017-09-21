@@ -11,31 +11,29 @@ Sign up for CoinGate account at <https://coingate.com> for production and <https
 
 Please note, that for "Test" mode you **must** generate separate API credentials on <https://sandbox.coingate.com>. API credentials generated on <https://coingate.com> will **not** work for "Test" mode.
 
-### via [Magento Connect](https://www.magentocommerce.com/magento-connect)
+### via FTP
 
-1. Login to Magento Admin Panel.
+1. Download plugin: https://github.com/coingate/magento-plugin/releases/download/v1.0.8/CoinGate_For_Magento-1.0.8.tgz
 
-2. Go to *System » Magento Connect » Magento Connect Manager*.
+2. Extract archive and upload `app` directory to root directory of your Magento store.
 
-3. Find *Paste extension key to install*, enter this url: `http://connect20.magentocommerce.com/community/CoinGate_For_Magento`, click **Install**, then click **Proceed**.
+3. Login to Admin panel.
 
-4. Click **Return to Admin**.
+4. Go to *System » Configuration*.
 
-5. Go to *System » Configuration*.
+5. Click on **Payment Methods** in *SALES* block.
 
-6. Click on **Payment Methods** in *SALES* block.
+6. In *Payment Methods* find and click on **Bitcoin via CoinGate.com**. Please note, [clear Magento cache](http://docs.magento.com/m1/ce/user_guide/system-operations/cache-clear.html) if payment method not appeared.
 
-7. In *Payment Methods* find and click on **Bitcoin via CoinGate.com**.
+7. Set *Enabled* to **Yes**.
 
-8. Set *Enabled* to **Yes**.
+8. Set *Currency you want to receive* to the currency in which you wish to receive your payouts from CoinGate. Please note, that if you set it to **Euros** or **US Dollars** you will have to get verified as a merchant (to do that, login to your CoinGate account and click *Verification*. If you set your receive currency to **Bitcoin** you will **not** have to get verified.
 
-9. Set *Currency you want to receive* to the currency in which you wish to receive your payouts from CoinGate. Please note, that if you set it to **Euros** or **US Dollars** you will have to get verified as a merchant (to do that, login to your CoinGate account and click *Verification*. If you set your receive currency to **Bitcoin** you will **not** have to get verified.
+9. Enter your API credentials: *App ID*, *API Key*, *API Secret* (to create your API credentials: login to your CoinGate account, go to *API » Apps*, click **+New App**, then click **Submit**).
 
-10. Enter your API credentials: *App ID*, *API Key*, *API Secret* (to create your API credentials: login to your CoinGate account, go to *API » Apps*, click **+New App**, then click **Submit**).
+10. Click **Save Config**.
 
-11. Click **Save Config**.
-
-If the plugin does not work, go to *System » Cache Management* and click on the **Flush Cache Storage** button.
+[Clear Magento cache](http://docs.magento.com/m1/ce/user_guide/system-operations/cache-clear.html) if the plugin does not work, go to *System » Cache Management* and click on the **Flush Cache Storage** button.
 
 #### Please note
 
