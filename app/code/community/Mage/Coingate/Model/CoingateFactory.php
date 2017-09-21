@@ -111,9 +111,14 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
       }
 
       if (!is_null($mageStatus)) {
-        $order->setState($mageStatus, TRUE)->save();
+        $order->setState($mageStatus, true)->save();
+
 
         if ($cgOrder->status == 'paid') {
+          $order->sendNewOrderEmail()->addStatusHistoryComment('You have confirmed the order to the customer via email.')
+            ->setIsCustomerNotified(true)
+            ->save();
+
           $order->setTotalPaid($cgOrder->price)->save();
         }
 
