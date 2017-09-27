@@ -13,7 +13,7 @@ Please note, that for "Test" mode you **must** generate separate API credentials
 
 ### via FTP
 
-1. Download plugin: https://github.com/coingate/magento-plugin/releases/download/v1.0.9/CoinGate_For_Magento-1.0.9.tgz
+1. Download plugin: [CoinGate_For_Magento-1.0.9.tgz](https://github.com/coingate/magento-plugin/releases/download/v1.0.9/CoinGate_For_Magento-1.0.9.tgz)
 
 2. Extract archive and upload `app` directory to root directory of your Magento store.
 
@@ -46,4 +46,4 @@ You must setup Magento cron jobs to deliver **order confirmation** (and other tr
 > Magento EE 1.14.1 and later, Magento CE 1.9.1 and later All Magento e-mails (including order confirmation and transactional)
 
 Cron jobs setup instruction:
-http://devdocs.magento.com/guides/m1x/install/installing_install.html#install-cron
+<http://devdocs.magento.com/guides/m1x/install/installing_install.html#install-cron>
