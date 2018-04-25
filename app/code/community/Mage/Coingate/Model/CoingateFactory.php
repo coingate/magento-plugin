@@ -2,7 +2,7 @@
 
 require_once(Mage::getBaseDir() . '/app/code/community/Mage/Coingate/lib/coingate-php/init.php');
 
-define('COINGATE_MAGENTO_VERSION', '1.0.9');
+define('COINGATE_MAGENTO_VERSION', '1.2.0');
 
 class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abstract
 {
@@ -40,14 +40,15 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
 
         $order = \CoinGate\Merchant\Order::create(array(
             'order_id'          => $order->increment_id,
-            'price'             => number_format($order->grand_total, 2, '.', ''),
-            'currency'          => $order->order_currency_code,
+            'price_amount'      => number_format($order->grand_total, 8, '.', ''),
+            'price_currency'    => $order->order_currency_code,
             'receive_currency'  => $cgConfig['receive_currency'],
             'success_url'       => Mage::getUrl('coingate/pay/success'),
             'cancel_url'        => Mage::getUrl('coingate/pay/cancel'),
-            'callback_url'      => Mage::getUrl('coingate/pay/callback') . '?token=' . $token,
+            'callback_url'      => Mage::getUrl('coingate/pay/callback'),
             'title'             => $title . ' Order #' . $order->increment_id,
-            'description'       => join($description, ', ')
+            'description'       => join($description, ', '),
+            'token'             => $token
         ));
 
         if (!empty($order)) {
@@ -134,11 +135,10 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
     private function initCoinGate($cgConfig)
     {
         \CoinGate\CoinGate::config((array(
-            'app_id'      => $cgConfig['app_id'],
-            'api_key'     => $cgConfig['api_key'],
-            'api_secret'  => $cgConfig['api_secret'],
-            'environment' => (int)($cgConfig['test']) == 1 ? 'sandbox' : 'live',
-            'user_agent'  => 'CoinGate - Magento Extension v' . COINGATE_MAGENTO_VERSION
+//            'auth_token'    => (empty($cgConfig['api_auth_token']) ? $cgConfig['api_secret'] : $cgConfig['api_auth_token']),
+            'auth_token'    => $cgConfig['api_secret'],
+            'environment'   => (int)($cgConfig['test']) == 1 ? 'sandbox' : 'live',
+            'user_agent'    => 'CoinGate - Magento Extension v' . COINGATE_MAGENTO_VERSION
         )));
     }
 }

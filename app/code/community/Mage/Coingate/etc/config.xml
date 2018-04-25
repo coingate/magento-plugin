@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Mage_Coingate>
-            <version>1.0.9</version>
+            <version>1.2.0</version>
         </Mage_Coingate>
     </modules>
 
@@ -54,9 +54,7 @@
             <coingate>
                 <active>0</active>
                 <model>coingate/coingateFactory</model>
-                <app_id>Your APP ID</app_id>
-                <api_key>Your API Key</api_key>
-                <api_secret>Your API Secret</api_secret>
+                <api_auth_token></api_auth_token>
                 <test>0</test>
                 <title>Bitcoin / Altcoins</title>
                 <desc>Pay with Bitcoin or Altcoins via CoinGate</desc>
