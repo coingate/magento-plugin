@@ -136,7 +136,7 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
     {
         \CoinGate\CoinGate::config((array(
 //            'auth_token'    => (empty($cgConfig['api_auth_token']) ? $cgConfig['api_secret'] : $cgConfig['api_auth_token']),
-            'auth_token'    => $cgConfig['api_secret'],
+            'auth_token'    => $cgConfig['api_auth_token'],
             'environment'   => (int)($cgConfig['test']) == 1 ? 'sandbox' : 'live',
             'user_agent'    => 'CoinGate - Magento Extension v' . COINGATE_MAGENTO_VERSION
         )));
