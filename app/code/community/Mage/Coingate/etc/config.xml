@@ -56,8 +56,8 @@
                 <model>coingate/coingateFactory</model>
                 <api_auth_token></api_auth_token>
                 <test>0</test>
-                <title>Bitcoin / Altcoins</title>
-                <desc>Pay with Bitcoin or Altcoins via CoinGate</desc>
+                <title>Cryptocurrencies via CoinGate</title>
+                <desc>Pay with BTC, LTC, ETH, XMR, XRP, BCH and other cryptocurrencies. Powered by CoinGate.</desc>
                 <invoice_paid>processing</invoice_paid>
                 <invoice_canceled>canceled</invoice_canceled>
                 <invoice_expired>canceled</invoice_expired>
