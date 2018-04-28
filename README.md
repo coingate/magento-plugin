@@ -23,11 +23,11 @@ Please note, that for "Test" mode you **must** generate separate API credentials
 
 5. Click on **Payment Methods** in *SALES* block.
 
-6. In *Payment Methods* find and click on **Bitcoin via CoinGate.com**. Please note, [clear Magento cache](http://docs.magento.com/m1/ce/user_guide/system-operations/cache-clear.html) if payment method not appeared.
+6. In *Payment Methods* find and click on **Cryptocurrency payments via CoinGate**. Please note, [clear Magento cache](http://docs.magento.com/m1/ce/user_guide/system-operations/cache-clear.html) if payment method not appeared.
 
 7. Set *Enabled* to **Yes**.
 
-8. Set *Currency you want to receive* to the currency in which you wish to receive your payouts from CoinGate. Please note, that if you set it to **Euros** or **US Dollars** you will have to get verified as a merchant (to do that, login to your CoinGate account and click *Verification*. If you set your receive currency to **Bitcoin** you will **not** have to get verified.
+8. Set *Currency you want to receive* to your preferred currency, in which payouts by CoinGate will be made. Please note that to receive settlements in **Euros** or **U.S. Dollars** to your bank, you have to verify as a merchant on CoinGate (login to your CoinGate account and click *Verification*). If you set your receive currency to **Bitcoin**, verification is not needed.
 
 9. Enter your API *Auth Token* (to create your API credentials: login to your CoinGate account, go to *API » Apps*, click **+New App**, fill out the form and click **Submit**).
 
