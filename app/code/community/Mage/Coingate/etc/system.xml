@@ -4,7 +4,7 @@
         <payment>
             <groups>
                 <coingate translate="label" module="paygate">
-                    <label>Bitcoin via CoinGate.com</label>
+                    <label>Cryptocurrency payments via CoinGate</label>
                     <sort_order>670</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -50,7 +50,7 @@
                             <label>Receive Currency</label>
                             <frontend_type>select</frontend_type>
                             <source_model>coingate/receiveCurrencies</source_model>
-                            <tooltip>Currency you want to receive when making withdrawal at CoinGate. Please take a note what if you choose EUR or USD you will be asked to verify your business before making a withdrawal at CoinGate.</tooltip>
+                            <tooltip>Choose the currency in which your payouts will be made (BTC, EUR or USD). For real-time EUR or USD settlements, you must verify as a merchant on CoinGate. Do not forget to add your Bitcoin address or bank details for payouts on your CoinGate account.</tooltip>
                             <sort_order>5</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -60,7 +60,7 @@
                             <label>Test mode?</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <tooltip>Live (coingate.com) is for production and Sandbox (sandbox.coingate.com) is for testing purpose. Please note, that for "Test mode" you must generate separate API credentials on sandbox.coingate.com. API credentials generated on coingate.com will not work for "Test mode".</tooltip>
+                            <tooltip>Live (coingate.com) is for production and Sandbox (sandbox.coingate.com) is for testing purposes. Please note that for "Test mode" you must generate separate API credentials on sandbox.coingate.com. API credentials generated on coingate.com will only work in Live mode.</tooltip>
                             <sort_order>6</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
