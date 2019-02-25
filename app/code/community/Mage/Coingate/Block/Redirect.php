@@ -32,8 +32,6 @@ class Mage_Coingate_Block_Redirect extends Mage_Core_Block_Abstract
     {
         $coingate = Mage::getModel('coingate/PaymentMethod');
 
-        //$mok_bud = $info->getAdditionalInformation('mok_bud');
-
         $form = new Varien_Data_Form();
         $form->setAction($coingate->getPayURL())
             ->setId('coingate_checkout')
@@ -53,23 +51,23 @@ class Mage_Coingate_Block_Redirect extends Mage_Core_Block_Abstract
 
         return $html;
 
-        $coingate = Mage::getModel('coingate/CoingateFactory');
-        $form = new Varien_Data_Form();
-        $form->setAction($tco->getUrl())
-            ->setId('pay')
-            ->setName('pay')
-            ->setMethod('POST')
-            ->setUseContainer(true);
-        $tco->getFormFields();
-        foreach ($tco->getFormFields() as $field=>$value) {
-            $form->addField($field, 'hidden', array('name'=>$field, 'value'=>$value));
-        }
-        $html = '<html><body>';
-        $html.= $tco->getRedirectMessage();
-        $html.= $form->toHtml();
-        $html.= $this->__('Please wait while we redirect you to payment');
-        $html.= '<script type="text/javascript">document.getElementById("pay").submit();</script>';
-        $html.= '</body></html>';
-        return $html;
+//        $coingate = Mage::getModel('coingate/CoingateFactory');
+//        $form = new Varien_Data_Form();
+//        $form->setAction($tco->getUrl())
+//            ->setId('pay')
+//            ->setName('pay')
+//            ->setMethod('POST')
+//            ->setUseContainer(true);
+//        $tco->getFormFields();
+//        foreach ($tco->getFormFields() as $field => $value) {
+//            $form->addField($field, 'hidden', array('name' => $field, 'value' => $value));
+//        }
+//        $html = '<html><body>';
+//        $html .= $tco->getRedirectMessage();
+//        $html .= $form->toHtml();
+//        $html .= $this->__('Please wait while we redirect you to payment');
+//        $html .= '<script type="text/javascript">document.getElementById("pay").submit();</script>';
+//        $html .= '</body></html>';
+//        return $html;
     }
 }

@@ -32,7 +32,7 @@ class Mage_Coingate_PayController extends Mage_Core_Controller_Front_Action
     public function cancelAction()
     {
         $session = Mage::getSingleton('checkout/session');
-        $session->setQuoteId($session->getPayQuoteId(TRUE));
+        $session->setQuoteId($session->getPayQuoteId(true));
 
         $order = Mage::getModel('sales/order');
         $order->load($session->getLastOrderId());
@@ -47,9 +47,9 @@ class Mage_Coingate_PayController extends Mage_Core_Controller_Front_Action
     public function successAction()
     {
         $session = Mage::getSingleton('checkout/session');
-        $session->setQuoteId($session->getPayQuoteId(TRUE));
-        Mage::getSingleton('checkout/session')->getQuote()->setIsActive(FALSE)->save();
-        $this->_redirect('checkout/onepage/success', array('_secure' => TRUE));
+        $session->setQuoteId($session->getPayQuoteId(true));
+        Mage::getSingleton('checkout/session')->getQuote()->setIsActive(false)->save();
+        $this->_redirect('checkout/onepage/success', array('_secure' => true));
     }
 
     public function failAction()

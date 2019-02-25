@@ -2,12 +2,12 @@
 
 require_once(Mage::getBaseDir() . '/app/code/community/Mage/Coingate/lib/coingate-php/init.php');
 
-define('COINGATE_MAGENTO_VERSION', '1.2.3');
+define('COINGATE_MAGENTO_VERSION', '1.2.4');
 
 class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abstract
 {
-    protected $_isGateway = TRUE;
-    protected $_canAuthorize = TRUE;
+    protected $_isGateway = true;
+    protected $_canAuthorize = true;
 
     protected $_code = 'coingate';
 
@@ -39,23 +39,23 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
         $this->initCoinGate($cgConfig);
 
         $order = \CoinGate\Merchant\Order::create(array(
-            'order_id'          => $order->increment_id,
-            'price_amount'      => number_format($order->grand_total, 8, '.', ''),
-            'price_currency'    => $order->order_currency_code,
-            'receive_currency'  => $cgConfig['receive_currency'],
-            'success_url'       => Mage::getUrl('coingate/pay/success'),
-            'cancel_url'        => Mage::getUrl('coingate/pay/cancel'),
-            'callback_url'      => Mage::getUrl('coingate/pay/callback'),
-            'title'             => $title . ' Order #' . $order->increment_id,
-            'description'       => join($description, ', '),
-            'token'             => $token
+            'order_id' => $order->increment_id,
+            'price_amount' => number_format($order->grand_total, 8, '.', ''),
+            'price_currency' => $order->order_currency_code,
+            'receive_currency' => $cgConfig['receive_currency'],
+            'success_url' => Mage::getUrl('coingate/pay/success'),
+            'cancel_url' => Mage::getUrl('coingate/pay/cancel'),
+            'callback_url' => Mage::getUrl('coingate/pay/callback'),
+            'title' => $title . ' Order #' . $order->increment_id,
+            'description' => join($description, ', '),
+            'token' => $token
         ));
 
         if (!empty($order)) {
             return $order->payment_url;
         }
 
-        return FALSE;
+        return false;
     }
 
     public function validateCallback()
@@ -108,7 +108,7 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
                     $mageStatus = $cgConfig['invoice_refunded'];
                     break;
                 default:
-                    $mageStatus = NULL;
+                    $mageStatus = null;
             }
 
             if (!is_null($mageStatus)) {
@@ -116,7 +116,8 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
 
 
                 if ($cgOrder->status == 'paid') {
-                    $order->sendNewOrderEmail()->addStatusHistoryComment('You have confirmed the order to the customer via email.')
+                    $order->sendNewOrderEmail()->addStatusHistoryComment('You have confirmed the order to the customer
+                     via email.')
                         ->setIsCustomerNotified(true)
                         ->save();
 
@@ -135,9 +136,9 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
     private function initCoinGate($cgConfig)
     {
         \CoinGate\CoinGate::config((array(
-            'auth_token'    => (empty($cgConfig['api_auth_token']) ? $cgConfig['api_secret'] : $cgConfig['api_auth_token']),
-            'environment'   => (int)($cgConfig['test']) == 1 ? 'sandbox' : 'live',
-            'user_agent'    => 'CoinGate - Magento Extension v' . COINGATE_MAGENTO_VERSION
+            'auth_token' => (empty($cgConfig['api_auth_token']) ? $cgConfig['api_secret'] : $cgConfig['api_auth_token']),
+            'environment' => (int)($cgConfig['test']) == 1 ? 'sandbox' : 'live',
+            'user_agent' => 'CoinGate - Magento Extension v' . COINGATE_MAGENTO_VERSION
         )));
     }
 }
