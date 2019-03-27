@@ -13,7 +13,7 @@ Please note, that for "Test" mode you **must** generate separate API credentials
 
 ### via FTP
 
-1. Download plugin: <https://github.com/coingate/magento-plugin/releases/download/v1.2.4/CoinGate_For_Magento-1.2.7.tgz>
+1. Download plugin: <https://github.com/coingate/magento-plugin/releases/download/v1.2.7/CoinGate_For_Magento-1.2.7.tgz>
 
 2. Extract archive and upload `app` directory to root directory of your Magento store.
 
