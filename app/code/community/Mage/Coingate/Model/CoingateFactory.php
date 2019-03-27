@@ -1,8 +1,8 @@
 <?php
 
-require_once(Mage::getBaseDir() . '/app/code/community/Mage/Coingate/lib/coingate-php/vendor/autoload.php');
+require_once(Mage::getBaseDir() . '/app/code/community/Mage/Coingate/lib/coingate-php/vendor/init.php');
 
-define('COINGATE_MAGENTO_VERSION', '1.2.5');
+define('COINGATE_MAGENTO_VERSION', '1.2.7');
 
 class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abstract
 {
