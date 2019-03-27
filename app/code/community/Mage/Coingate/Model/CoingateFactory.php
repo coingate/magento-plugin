@@ -1,6 +1,6 @@
 <?php
 
-require_once(Mage::getBaseDir() . '/app/code/community/Mage/Coingate/lib/coingate-php/init.php');
+require_once(Mage::getBaseDir() . '/app/code/community/Mage/Coingate/lib/coingate-php/vendor/autoload.php');
 
 define('COINGATE_MAGENTO_VERSION', '1.2.5');
 
