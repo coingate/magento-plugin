@@ -6,7 +6,7 @@ class Mage_Coingate_Model_ReceiveCurrencies
     {
         return array(
             array('value' => 'btc', 'label' => 'Bitcoin (฿)'),
-            array('value' => 'usdt', 'label' => 'USDT'),
+            array('value' => 'usdt', 'label' => 'USDT (₮)'),
             array('value' => 'eth', 'label' => 'Ethereum'),
             array('value' => 'ltc', 'label' => 'Litecoin'),
             array('value' => 'eur', 'label' => 'Euros (€)'),

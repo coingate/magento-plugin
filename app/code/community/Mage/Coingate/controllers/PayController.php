@@ -21,6 +21,16 @@ class Mage_Coingate_PayController extends Mage_Core_Controller_Front_Action
 
         $coingate = Mage::getModel('coingate/CoingateFactory');
 
+        $order = Mage::getModel('sales/order');
+        $order->load($session->getLastOrderId());
+
+        $quote = Mage::getModel('sales/quote')->load($order->getQuoteId());
+
+        if ($quote->getId()) {
+            $quote->setIsActive(1)->setReservedOrderId(null)->save();
+            $session->replaceQuote($quote);
+        }
+
         $this->_redirectUrl($coingate->getRequest());
     }
 
@@ -39,6 +49,13 @@ class Mage_Coingate_PayController extends Mage_Core_Controller_Front_Action
 
         if ($order->getId()) {
             $order->cancel()->save();
+        }
+
+        $quote = Mage::getModel('sales/quote')->load($order->getQuoteId());
+
+        if ($quote->getId()) {
+            $quote->setIsActive(1)->setReservedOrderId(null)->save();
+            $session->replaceQuote($quote);
         }
 
         $this->_redirect('checkout/cart');
