@@ -112,8 +112,13 @@ class Mage_Coingate_Model_CoingateFactory extends Mage_Payment_Model_Method_Abst
             }
 
             if (!is_null($mageStatus)) {
-                $order->setState($mageStatus, true)->save();
 
+                if ($cgOrder->status == 'expired' || $cgOrder->status == 'canceled' || $cgOrder->status == 'invalid') {
+                    if ($payment->getData('method') == 'coingate') {
+                        $order->cancel()->save();   //Restocks
+                    }
+                }
+                $order->setState($mageStatus, true)->save();
 
                 if ($cgOrder->status == 'paid') {
                     $order->sendNewOrderEmail()->addStatusHistoryComment('You have confirmed the order to the customer
